@@ -68,5 +68,5 @@ export const LastTransaction = styled.Text`
   font-size: ${RFValue(12)}px;
 
   color: ${({ theme, type }) =>
-    type === "total" ? theme.colors.shape : theme.colors.text_dark};
+    type === "total" ? theme.colors.shape : theme.colors.text};
 `;
