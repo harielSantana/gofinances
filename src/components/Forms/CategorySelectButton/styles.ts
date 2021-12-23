@@ -12,13 +12,12 @@ export const Container = styled.TouchableOpacity.attrs({
   align-items: center;
 
   border-radius: 5px;
+  padding: 18px 16px;
 `;
 
 export const Category = styled.Text`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(14)}px;
-
-  padding: 18px 16px;
 `;
 
 export const Icon = styled(Feather)`
