@@ -6,6 +6,7 @@ import {
   getBottomSpace,
   getStatusBarHeight,
 } from "react-native-iphone-x-helper";
+import { DataListProps } from ".";
 
 export const Container = styled.View`
   flex: 1;
@@ -74,7 +75,7 @@ export const Icon = styled(Feather)`
 export const HighlightCards = styled.ScrollView.attrs({
   horizontal: true,
   showsHorizontalScrollIndicator: false,
-  contentContainerStyle: { paddingHorizontal: 24 },
+  contentContainerStyle: { paddingLeft: 24, paddingRight: 8 },
 })`
   width: 100%;
   position: absolute;
@@ -96,11 +97,17 @@ export const Title = styled.Text`
 
 export const TransactionList = styled(
   FlatList as new (
-    props: FlatListProps<DatalistProps>
-  ) => FlatList<DatalistProps>
+    props: FlatListProps<DataListProps>
+  ) => FlatList<DataListProps>
 ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     paddingBottom: getBottomSpace(),
   },
 })``;
+
+export const LoadContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
