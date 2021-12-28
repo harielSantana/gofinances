@@ -63,7 +63,7 @@ export const Amount = styled.Text<TypeProps>`
   margin-top: 38px;
 `;
 
-export const LastTransaction = styled.Text`
+export const LastTransaction = styled.Text<TypeProps>`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(12)}px;
 

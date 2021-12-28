@@ -42,16 +42,99 @@ interface CategoryData {
   percent: string;
 }
 
+const mockdata = [
+  {
+    id: 1,
+    first_name: "Hilly",
+    last_name: "Moloney",
+    email: "hmoloney0@wiley.com",
+    gender: "Male",
+    ip_address: "183.202.85.245",
+  },
+  {
+    id: 2,
+    first_name: "Rourke",
+    last_name: "Maltman",
+    email: "rmaltman1@acquirethisname.com",
+    gender: "Female",
+    ip_address: "205.39.200.29",
+  },
+  {
+    id: 3,
+    first_name: "Rockey",
+    last_name: "Dockray",
+    email: "rdockray2@barnesandnoble.com",
+    gender: "Male",
+    ip_address: "152.105.69.243",
+  },
+  {
+    id: 4,
+    first_name: "Jaymee",
+    last_name: "Hadaway",
+    email: "jhadaway3@hp.com",
+    gender: "Male",
+    ip_address: "91.20.79.63",
+  },
+  {
+    id: 5,
+    first_name: "Billi",
+    last_name: "Marskell",
+    email: "bmarskell4@alexa.com",
+    gender: "Male",
+    ip_address: "182.21.174.112",
+  },
+  {
+    id: 6,
+    first_name: "Parke",
+    last_name: "Arnke",
+    email: "parnke5@issuu.com",
+    gender: "Female",
+    ip_address: "157.22.142.162",
+  },
+  {
+    id: 7,
+    first_name: "Judie",
+    last_name: "MacAughtrie",
+    email: "jmacaughtrie6@storify.com",
+    gender: "Male",
+    ip_address: "131.240.245.155",
+  },
+  {
+    id: 8,
+    first_name: "Harwilll",
+    last_name: "Latey",
+    email: "hlatey7@bluehost.com",
+    gender: "Male",
+    ip_address: "203.58.182.151",
+  },
+  {
+    id: 9,
+    first_name: "Hettie",
+    last_name: "Tomsa",
+    email: "htomsa8@stanford.edu",
+    gender: "Female",
+    ip_address: "123.231.250.208",
+  },
+  {
+    id: 10,
+    first_name: "Lindi",
+    last_name: "Skahill",
+    email: "lskahill9@ihg.com",
+    gender: "Male",
+    ip_address: "18.189.7.154",
+  },
+];
+
 export function Resume() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
     []
   );
+
   const theme = useTheme();
 
   function handleDateChange(action: "next" | "prev") {
-    setIsLoading(true);
     if (action === "next") {
       setSelectedDate(addMonths(selectedDate, 1));
     } else {
@@ -60,6 +143,7 @@ export function Resume() {
   }
 
   async function loadData() {
+    setIsLoading(true);
     const dataKey = "@gofinances:transactions";
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
@@ -152,7 +236,10 @@ export function Resume() {
           <ChartContainer>
             <VictoryPie
               data={totalByCategories}
+              y={"total"}
+              x={"percent"}
               colorScale={totalByCategories.map((category) => category.color)}
+              labelRadius={100}
               style={{
                 labels: {
                   fontSize: RFValue(18),
@@ -160,9 +247,6 @@ export function Resume() {
                   fill: theme.colors.shape,
                 },
               }}
-              labelRadius={50}
-              x="percent"
-              y="total"
             />
           </ChartContainer>
           {totalByCategories.map((item) => (
