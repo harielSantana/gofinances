@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Dashboard } from "../screens/Dashboard";
 import { Register } from "../screens/Register";
 import { Resume } from "../screens/Resume";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 export function AppRoutes() {
@@ -20,8 +21,9 @@ export function AppRoutes() {
         tabBarInactiveTintColor: theme.colors.primary,
         tabBarLabelPosition: "beside-icon",
         tabBarStyle: {
-          height: 80,
-          paddingVertical: Platform.OS === "ios" ? 20 : 0,
+          height: Platform.OS === "ios" ? 80 : 70,
+          paddingTop: Platform.OS === "ios" ? getBottomSpace() - 20 : 0,
+          // paddingVertical: Platform.OS == = "ios" ? 20 : 0,
           justifyContent: "center",
         },
       }}

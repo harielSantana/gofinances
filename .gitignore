@@ -1,1 +1,12 @@
 node_modules
+
+#CocoaPods 
+.ios/Pods/
+
+#Expo
+.expo
+.web-build
+
+
+#Ambiente
+.env

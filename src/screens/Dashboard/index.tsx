@@ -28,6 +28,7 @@ import {
   LoadContainer,
 } from "./styles";
 import { useTheme } from "styled-components";
+import { useAuth } from "../../hooks/auth";
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
@@ -48,6 +49,8 @@ export function Dashboard() {
   const [highlightData, setHighlightData] = useState<HighlightData>(
     {} as HighlightData
   );
+
+  const { user, signOut } = useAuth();
 
   const theme = useTheme();
 
@@ -170,17 +173,16 @@ export function Dashboard() {
               <UserInfo>
                 <Photo
                   source={{
-                    uri: "https://github.com/harielsantana.png",
-                    // uri: "https://avatars.githubusercontent.com/u/93281902?v=4",
+                    uri: user.photo,
                   }}
                 />
                 <User>
                   <UserGreeting>Olá,</UserGreeting>
-                  <UserName>Hariel S. Oliveira</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
 
-              <LogoutButton>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>
