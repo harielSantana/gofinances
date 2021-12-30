@@ -27,6 +27,7 @@ interface IAuthContextData {
   signInWithGoogle(): Promise<void>;
   signInWithApple(): Promise<void>;
   signOut(): Promise<void>;
+  userStorageLoading: boolean;
 }
 
 interface AuthorizationResponse {
@@ -50,6 +51,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signInWithGoogle() {
     try {
       const RESPONSE_TYPE = "token";
+      const REDIRECT_URI = "https://auth.expo.io/@ylbrad/gofinances";
       const SCOPE = encodeURI("profile email");
       const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
       const { type, params } = (await AuthSession.startAsync({
@@ -84,11 +86,14 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (credential) {
+        const name = credential.fullName!.givenName!;
+        const photo = `https://ui-avatars.com/api/?name=${name}&lenght=1`;
+
         const userLogged = {
           id: String(credential.user),
           email: credential.email!,
-          name: credential.fullName!.givenName!,
-          photo: undefined,
+          name,
+          photo,
         };
         setUser(userLogged);
         console.log("Trazendo dados da auth do apple", userLogged);
@@ -111,16 +116,21 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (userStoraged) {
         const userLogged = JSON.parse(userStoraged) as User;
         setUser(userLogged);
-        setUserStorageLoading(false);
       }
-
-      loadUserStorageDate();
+      setUserStorageLoading(false);
     }
+    loadUserStorageDate();
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ user, signInWithGoogle, signInWithApple, signOut }}
+      value={{
+        user,
+        userStorageLoading,
+        signInWithGoogle,
+        signInWithApple,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

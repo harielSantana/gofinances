@@ -6,12 +6,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 import { useForm } from "react-hook-form";
 
-import { InputForm } from "../../components/Forms/InputForm";
-import { Button } from "../../components/Forms/Button";
-import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton";
-import { CategorySelect } from "../CategorySelect";
-import { CategorySelectButton } from "../../components/Forms/CategorySelectButton";
-
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -22,6 +16,14 @@ import {
   Fields,
   TransactionsTypes,
 } from "./styles";
+
+import { InputForm } from "../../components/Forms/InputForm";
+import { Button } from "../../components/Forms/Button";
+import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton";
+import { CategorySelect } from "../CategorySelect";
+import { CategorySelectButton } from "../../components/Forms/CategorySelectButton";
+
+import { useAuth } from "../../hooks/auth";
 
 interface FormData {
   name: string;
@@ -45,6 +47,8 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
+
+  const { user } = useAuth();
 
   const {
     control,
@@ -81,7 +85,7 @@ export function Register() {
     };
 
     try {
-      const dataKey = "@gofinances:transactions";
+      const dataKey = `@gofinances:transactions_user:${user.id}`;
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
 

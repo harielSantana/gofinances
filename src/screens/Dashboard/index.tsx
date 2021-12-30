@@ -50,20 +50,27 @@ export function Dashboard() {
     {} as HighlightData
   );
 
-  const { user, signOut } = useAuth();
-
   const theme = useTheme();
+  const { user, signOut } = useAuth();
 
   function getLastTransactionDate(
     collection: DataListProps[],
     type: "positive" | "negative"
   ) {
+    const collectionFiltered = collection.filter(
+      (transaction) => transaction.type === type
+    );
+
+    if (collectionFiltered.length === 0) {
+      return "0";
+    }
+
     const lastTransaction = new Date(
       Math.max.apply(
         Math,
-        collection
-          .filter((transaction) => transaction.type === type)
-          .map((transaction) => new Date(transaction.date).getTime())
+        collectionFiltered.map((transaction) =>
+          new Date(transaction.date).getTime()
+        )
       )
     );
 
@@ -74,7 +81,7 @@ export function Dashboard() {
   }
 
   async function loadTransactions() {
-    const dataKey = "@gofinances:transactions";
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 
@@ -112,6 +119,7 @@ export function Dashboard() {
     );
 
     setTransactions(transactionsFormatted);
+
     const lastTransactionEntries = getLastTransactionDate(
       transactions,
       "positive"
@@ -120,6 +128,7 @@ export function Dashboard() {
       transactions,
       "negative"
     );
+
     const totalInteval = `01 a ${lastTransactionExpenses}`;
 
     const total = entriesTotal - expensiveTotal;
