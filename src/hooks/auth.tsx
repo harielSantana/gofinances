@@ -64,8 +64,6 @@ function AuthProvider({ children }: AuthProviderProps) {
           `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`
         );
 
-        console.log("Usuário logado", response);
-
         const userInfo = await response.json();
         const userLoggedIn = {
           id: userInfo.id,
