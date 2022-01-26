@@ -3,7 +3,7 @@ import { render } from "@testing-library/react-native";
 
 import { Profile } from "../../screens/Profile";
 
-describe("Profile", () => {
+describe("Screen: Profile", () => {
   it("should have an input with placeholder value as name", () => {
     const { getByPlaceholderText } = render(<Profile />);
 

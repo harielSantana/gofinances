@@ -60,12 +60,6 @@
     "cz-conventional-changelog": "3.3.0",
     "typescript": "~4.3.5"
   },
-  "jest": {
-    "preset": "jest-expo",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
-    ]
-  },
   "private": true,
   "config": {
     "commitizen": {
