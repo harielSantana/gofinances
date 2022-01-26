@@ -9,6 +9,9 @@ import React, {
 import * as AuthSession from "expo-auth-session";
 import * as AppleAuthentication from "expo-apple-authentication";
 
+const { CLIENT_ID } = process.env;
+const { REDIRECT_URI } = process.env;
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AuthProviderProps {
@@ -37,9 +40,6 @@ interface AuthorizationResponse {
   type: string;
 }
 
-const { CLIENT_ID } = process.env;
-const { REDIRECT_URI } = process.env;
-
 const AuthContext = createContext({} as IAuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
@@ -51,16 +51,21 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signInWithGoogle() {
     try {
       const RESPONSE_TYPE = "token";
-      const REDIRECT_URI = "https://auth.expo.io/@ylbrad/gofinances";
       const SCOPE = encodeURI("profile email");
+
       const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+
       const { type, params } = (await AuthSession.startAsync({
         authUrl,
       })) as AuthorizationResponse;
+
       if (type === "success") {
         const response = await fetch(
           `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`
         );
+
+        console.log("Usuário logado", response);
+
         const userInfo = await response.json();
         const userLoggedIn = {
           id: userInfo.id,
@@ -68,7 +73,9 @@ function AuthProvider({ children }: AuthProviderProps) {
           name: userInfo.given_name,
           photo: userInfo.picture,
         };
+
         setUser(userLoggedIn);
+
         AsyncStorage.setItem(userStorageKey, JSON.stringify(userLoggedIn));
       }
     } catch (error) {
