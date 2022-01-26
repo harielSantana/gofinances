@@ -57,6 +57,7 @@
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
     "@types/styled-components-react-native": "^5.1.3",
+    "cz-conventional-changelog": "3.3.0",
     "typescript": "~4.3.5"
   },
   "jest": {
@@ -65,5 +66,10 @@
       "@testing-library/jest-native/extend-expect"
     ]
   },
-  "private": true
+  "private": true,
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
