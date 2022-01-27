@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "commit": "cz",
-    "test": "jest"
+    "test": "jest",
+    "test:w": "yarn test --watchAll"
   },
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.2.0",
