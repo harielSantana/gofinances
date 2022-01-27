@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthProvider, useAuth } from "./auth";
 import { startAsync } from "expo-auth-session";
 
+//Coloque no inicio do arquivo para habilitar o mock do fetch.
 fetchMock.enableMocks();
 
 const userInfo = {
@@ -28,6 +29,7 @@ describe("Auth Hook", () => {
   it("should be able to sign in with an existing Google account", async () => {
     const googleMock = mocked(startAsync as any);
 
+    //Primeiro, nós precisamos do Token. Então, vamos Mockar a função de startAsync.
     googleMock.mockReturnValueOnce({
       type: "success",
       params: {
@@ -35,12 +37,14 @@ describe("Auth Hook", () => {
       },
     });
 
+    //Agora que temos o Token, vamos mockar a requisição ttp dos dados de profile do usuário.
     fetchMock.mockResponseOnce(JSON.stringify(userInfo));
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: AuthProvider,
     });
 
+    //Chamando a função "signInWithGoogle" dentro do arquivo de auth.tsx
     await act(() => result.current.signInWithGoogle());
 
     expect(result.current.user.email).toBe(userInfo.email);
